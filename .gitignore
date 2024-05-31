@@ -1,0 +1,10 @@
+.venv
+db.db
+tailwind.config.js
+img
+__pycache__
+.vscode
+.idx
+.env
+projects.json
+test-query.py

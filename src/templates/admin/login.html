@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greeb</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <header class=" px-5 font-bold bg-slate-800 flex flex-col">
+        <div  class="logo relative flex flex-1 flex-row  py-2 align-middle "><span class="z-10 pt-3 italic text-5xl font-extrabold -rotate-12 text-lime-400">Greeb</span><img class="w-28 left-3 absolute" src="static/img/greeb1.2.png" alt="" srcset=""></div>
+        <div class="flex gap-3 justify-end italic">
+            <a href="/" class="text-lime-200 border-lime-400 px-1 hover:text-lime-600">Inicio</a>
+            <a href="/proyectos" class="text-lime-200 px-1 border-lime-400 hover:text-lime-600">Proyectos</a>
+            <a href="/contacto" class="text-lime-200 px-1 border-lime-400 hover:text-lime-600" >Contacto</a>
+        </div>
+    </header>
+    
+    <div class="flex flex-col gap-3 py-4 px-4 place-items-center">
+        <form action="/admin/login" method="post"
+        class="bg-slate-800 py-3 px-3 rounded-md flex flex-col gap-4 place-items-stretch w-10/12 max-w-xl"
+        >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="flex flex-col gap-2 place-items-stretch">
+            <label for="username" class="text-lime-200"
+              >Usuario</label
+              >
+              <input
+              name="username"
+              type="text"
+              class="px-2 rounded"
+              required
+              />
+              <label for="password" class="text-lime-200"
+              >Contraseña</label
+              >
+              <input
+              name="password"
+              type="password"
+              class="px-2 rounded"
+              required
+            />
+          </div>
+          <input type="submit" value="Iniciar sesión"
+            class="text-lime-200 py-3 px-3 rounded-md border-solid border-lime-400 border-2 hover:opacity-70">
+        </form>
+
+        <div class="bg-slate-800 py-3 px-3 rounded-md flex flex-col w-10/12 max-w-xl">
+            <button class="flex flex-col text-lime-200 rounded-md border-solid border-lime-400 border-2 hover:opacity-70">
+                <a href="/admin/register" class="text-lime-200 py-3 px-3 min-w-full">Registrarse</a>
+            </button>
+        </div>
+
+    </div>
+    
+    {% set messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <div id="notification" class="absolute bg-red-400 px-4 py-2 left-0 bottom-0 w-full">
+            <p class="text-slate-800 font-medium text-center">{{message}}</p>
+            <!-- <p class="text-slate-800 text-center">¡Vuelva a intentarlo!</p> -->
+        </div>
+        <script>
+            const notification = document.getElementById("notification");
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 3000);
+        </script>
+        {% endfor %}
+    {% endif %}
+    
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greeb</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <header class=" px-5 font-bold bg-slate-800 flex flex-col">
+        <div  class="logo relative flex flex-1 flex-row  py-2 align-middle "><span class="z-10 pt-3 italic text-5xl font-extrabold -rotate-12 text-lime-400">Greeb</span><img class="w-28 left-3 absolute" src="static/img/greeb1.2.png" alt="" srcset=""></div>
+        <div class="flex gap-3 justify-end italic">
+            <a href="/admin/dashboard"class="text-lime-200 border-lime-400 px-1 hover:text-lime-600">Inicio</a>
+            <a href="/admin/proyectos" class="text-lime-200 px-1 border-lime-400 border-b-4 hover:text-lime-600">Proyectos</a>
+            <a href="/admin/mensajes" class="text-lime-200 px-1 border-lime-400 hover:text-lime-600" >Mensajes</a>
+        </div>
+    </header>
+
+    <div class="flex flex-row gap-3 justify-start italic place-items-center ">
+        <a href="/admin/logout" class="bg-slate-800 py-2 px-2 text-lime-200 border-2  border-slate-100 hover:text-lime-600">Cerrar sesión</a>
+        <h2 class="text-slate-800 font-medium">Admin: {{ current_user.username }}</h2>
+    </div>
+    
+    <div class="flex flex-col gap-3 py-4 px-4 place-items-center">
+        <form action="/admin/proyectos" method="post" enctype="multipart/form-data"
+        class="bg-slate-800 py-3 px-3 rounded-md flex flex-col gap-4 place-items-stretch w-10/12 max-w-xl"
+        >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="flex flex-col gap-2 place-items-stretch">
+            <label for="name" class="text-lime-200">
+                Nombre
+            </label>
+            <input name="name" type="text" class="px-2 rounded" required/>
+            <label for="description" class="text-lime-200">
+                Descripción
+            </label>
+            <textarea name="description" rows="5" required ></textarea>
+            <label for="site" class="text-lime-200">
+                Sitio
+            </label>
+            <input name="site" type="url" class="px-2 rounded">
+            <label for="image" class="text-lime-200">
+                Imagenes
+            </label>
+            <input class="text-lime-200" name="image" type="file" multiple class="px-2 rounded">
+              
+          </div>
+          <input type="submit" value="Nuevo Proyecto"
+            class="text-lime-200 py-3 px-3 rounded-md border-solid border-lime-400 border hover:opacity-70">
+        </form>
+
+        <div id="container-projects" class="py-4 px-4 flex flex-col gap-4">
+            {% if projects %}
+                {% for project in projects %}
+                <div class="bg-slate-800 rounded-md px-2 py-2 flex flex-col gap-3 md:flex-row">
+                    <div class="flex flex-col gap-2 md:max-w-60 lg:max-w-80 md:px-3 md:py-3">
+                      <span class="text-lime-400 text-xl font-bold">{{project.name}}</span>
+                      <span class="text-lime-200 font-light md:font-normal"
+                        >{{project.description}}</span
+                      >
+                      {% if project.site %}
+                        <div class="flex-col">
+                            <span class="text-lime-200 font-light md:font-normal">Sitio: </span><a target="_blank" class="text-lime-300 underline font-light md:font-normal" href={{project.site}}>{{project.site}}</a>
+                        </div>
+                        
+                      {% endif %}
+                      <div class="flex flex-col px-2 py-2 place-items-center">
+                        <button data-name={{project.name}} data-id={{project.id}} type="button" onclick="deleteProject(this)" class="border-lime-600 border-solid rounded border py-2 px-2 text-lime-200 hover:border-red-400 hover:text-red-200">
+                            Eliminar
+                        </button>
+                        <script>
+                            
+                            async function deleteProject(btn) {
+                                const id = btn.dataset.id;
+                                const projectName = btn.dataset.name;
+                                if (confirm("Desea eliminar el proyecto "+projectName+"?")) {
+                                    window.location.href = window.location.href+"/eliminar/"+id;
+                                }
+                            }
+                        </script>
+                      </div>
+                    </div>
+                    <div
+                      class="flex flex-grow overflow-x-auto rounded-md gap-2 justify-items-center w-full md:px-3"
+                    >
+                      {% if project.images %}
+                        {% for image in project.images %}
+                            <img class="place-self-center rounded-md max-h-96" src="{{ url_for('static', filename=image) }}" alt="" loading="lazy">
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    </div>
+    
+    {% set messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+        <div id="notification" class="fixed bg-red-400 px-4 py-2 left-0 bottom-0 w-full">
+            <p class="text-slate-800 font-medium text-center">{{ message }}</p>
+        </div>
+        <script>
+            const notification = document.getElementById("notification");
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 3000);
+        </script>
+        {% endfor %}
+    {% endif %}
+    
+</body>
+</html>

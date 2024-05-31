@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS user (
+    id_user INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(20) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    admin BOOLEAN NOT NULL DEFAULT 0
+    );
+
+CREATE TABLE IF NOT EXISTS project (
+    id_project INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(20) UNIQUE NOT NULL,
+    description TEXT NOT NULL,
+    site VARCHAR(40)
+    );
+
+CREATE TABLE IF NOT EXISTS image (
+    id_image INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_project INTEGER NOT NULL,
+    path VARCHAR(40) NOT NULL,
+    FOREIGN KEY (id_project) REFERENCES project (id_project)
+    );
+
+CREATE TABLE IF NOT EXISTS message (
+    id_message INTEGER PRIMARY KEY AUTOINCREMENT,
+    email VARCHAR(40) NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    message TEXT NOT NULL
+    );
