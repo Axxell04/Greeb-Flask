@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash
 from entities import User, Project, Mail
 from db import get_db
 from config import config
+import pathlib
 
 class ModelUser():
     
@@ -75,8 +76,13 @@ class ModelProject():
             cursor = db.cursor()
             cursor.execute("SELECT * FROM project ORDER BY id_project DESC LIMIT 1")
             project_res = cursor.fetchone()
+
             if project_res:
                 project = Project(id=project_res["id_project"], name=project_res["name"], description=project_res["description"], site=project_res["site"])
+                print(project.id)
+                print(project.name)
+                print(project.description)
+                print(project.site)
                 return project
     
     @classmethod
@@ -84,6 +90,10 @@ class ModelProject():
         
         images_path = []
         images = project.get_images()
+        
+        if not os.path.exists(config["development"].STATIC_PATH):
+            print(config["development"].STATIC_PATH)
+            os.mkdir(os.path.exists(config["development"].STATIC_PATH))
         
         STATIC_IMG_PATH = os.path.join(config["development"].STATIC_PATH, "img")
 
@@ -96,7 +106,7 @@ class ModelProject():
         for image in images:
             image_path = os.path.join("img", project.name, f"{images.index(image)}.{image.filename.split('.')[-1]}")
             image.save(os.path.join(config["development"].STATIC_PATH, image_path))
-            images_path.append(image_path)
+            images_path.append(image_path.replace("\\", "/"))
         
         with get_db() as db:
             cursor = db.cursor()

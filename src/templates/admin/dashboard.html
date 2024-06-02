@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Greeb</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/greeb1.2.png') }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <header class=" px-5 font-bold bg-slate-800 flex flex-col">
-        <div  class="logo relative flex flex-1 flex-row  py-2 align-middle "><span class="z-10 pt-3 italic text-5xl font-extrabold -rotate-12 text-lime-400">Greeb</span><img class="w-28 left-3 absolute" src="static/img/greeb1.2.png" alt="" srcset=""></div>
+        <div  class="logo relative flex flex-1 flex-row  py-2 align-middle "><span class="z-10 pt-3 italic text-5xl font-extrabold -rotate-12 text-lime-400">Greeb</span><img class="w-28 left-3 absolute" src="{{ url_for('static', filename='img/greeb1.2.png') }}"></div>
         
         <div class="flex gap-3 justify-end italic">
             <a href="/admin/dashboard" class="text-lime-200 px-1 border-b-4 border-lime-400 hover:text-lime-600">Inicio</a>
@@ -25,16 +26,16 @@
         <div class="bg-slate-800 flex flex-col px-4 py-4 gap-3 rounded-md w-10/12 max-w-2xl">
             <h1 class="text-lime-300 text-xl text-center">Mensaje más reciente</h1>
             {% if last_message %}
-                <div class="flex flex-col py-2 px-2 gap-3">
-                    <div>
+                <div class="flex flex-col py-2 px-2 gap-3 sm:grid sm:grid-cols-2">
+                    <div class="text-center">
                         <h2 class="text-lime-400 font-medium text-lg">Correo</h2>
                         <span class="text-lime-200">{{ last_message.email }}</span>
                     </div>
-                    <div>
+                    <div class="text-center">
                         <h2 class="text-lime-400 font-medium text-lg">Nombre</h2>
                         <span class="text-lime-200">{{ last_message.name }}</span>
                     </div>
-                    <div>
+                    <div class="text-center sm:col-span-2">
                         <h2 class="text-lime-400 font-medium text-lg">Mensaje</h2>
                         <p class="text-lime-200">{{ last_message.message }}</p>
                     </div>
@@ -49,17 +50,17 @@
         <div class="bg-slate-800 flex flex-col px-4 py-4 gap-3 rounded-md w-10/12 max-w-2xl">
             <h1 class="text-lime-300 text-xl text-center">Proyecto más reciente</h1>
             {% if last_project %}
-                <div class="flex flex-col py-2 px-2 gap-3">
+                <div class="flex flex-col py-2 px-2 gap-3 text-center">
                     <h2 class="text-lime-400 font-medium text-lg">{{ last_project.name }}</h2>
                     <p class="text-lime-200">{{ last_project.description }}</p>
                     {% if last_project.site %}
                         <div class="flex-col">
-                            <span class="text-lime-200 font-light md:font-normal">Sitio: </span><a target="_blank" class="text-lime-300 underline font-light md:font-normal" href={{project.site}}>{{project.site}}</a>
+                            <span class="text-lime-200 font-light md:font-normal">Sitio: </span><a target="_blank" class="text-lime-300 underline font-light md:font-normal" href={{last_project.site}}>{{last_project.site}}</a>
                         </div>
                     {% endif %}
                 </div>
             {% else %}
-                <p class="text-lime-200">No hay proyectos</p>
+                <p class="text-lime-200 text-center">No hay proyectos</p>
             {% endif %}
         </div>
     </div>

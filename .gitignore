@@ -1,7 +1,7 @@
 .venv
+venv
 db.db
 tailwind.config.js
-img
 __pycache__
 .vscode
 .idx
